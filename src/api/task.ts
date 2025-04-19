@@ -29,7 +29,7 @@ const apis: ApiCfg[] = [
   },
   // 用户发布过的任务
   {
-    url: "/api/task/self/published",
+    url: "/api/task/user/published",
     method: "post",
     handler: {
       version: "1.0.0",
@@ -38,7 +38,7 @@ const apis: ApiCfg[] = [
   },
   // 用户卖出的任务
   {
-    url: "/api/task/self/sellout",
+    url: "/api/task/user/sellout",
     method: "post",
     handler: {
       version: "1.0.0",
@@ -47,7 +47,7 @@ const apis: ApiCfg[] = [
   },
   // 用户买入的任务
   {
-    url: "/api/task/self/buyin",
+    url: "/api/task/user/buyin",
     method: "post",
     handler: {
       version: "1.0.0",
@@ -56,7 +56,7 @@ const apis: ApiCfg[] = [
   },
   // 用户的任务统计
   {
-    url: "/api/task/self/count",
+    url: "/api/task/user/count",
     method: "get",
     handler: {
       version: "1.0.0",
