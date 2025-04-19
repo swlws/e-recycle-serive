@@ -3,6 +3,7 @@ import {
   i_finish_task,
   i_publish_task,
   i_query_all_task,
+  i_query_one_task,
   i_query_user_buy_in_task,
   i_query_user_published_task,
   i_query_user_sell_out_task,
@@ -19,6 +20,15 @@ const apis: ApiCfg[] = [
     handler: {
       version: "1.0.0",
       cb: i_publish_task,
+    },
+  },
+  // 查找单个任务
+  {
+    url: "/api/task/one",
+    method: "post",
+    handler: {
+      version: "1.0.0",
+      cb: i_query_one_task,
     },
   },
   // 任务大厅。所有的任务

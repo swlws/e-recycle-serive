@@ -10,6 +10,7 @@ import { user_task_count } from "../business/task/task_count";
 import { remove_task } from "../business/task/remove_task";
 import { finish_task } from "../business/task/finish_task";
 import { take_task } from "../business/task/take_task";
+import { query_one_task } from "../business/task/query_one_task";
 
 /**
  * 发布任务
@@ -28,6 +29,31 @@ export async function i_publish_task(
     const headers = getHeaders(req, false);
 
     await publish_task(ctx, params, headers);
+  } catch (e) {
+    ctx.error = e;
+  } finally {
+    next();
+  }
+}
+
+/**
+ * 查询单个任务
+ * @param req
+ * @param res
+ * @param next
+ */
+export async function i_query_one_task(
+  req: ReqWrapper,
+  res: Response,
+  next: Next
+) {
+  const ctx = req.getCtx();
+  try {
+    const params = req.params;
+    const headers = getHeaders(req, false);
+
+    const info = await query_one_task(ctx, params, headers);
+    ctx.data = { r0: 0, res: info };
   } catch (e) {
     ctx.error = e;
   } finally {
