@@ -1,10 +1,12 @@
-import TestApi from "./test";
+import OpsApi from "./ops";
+import AuthApi from "./auth";
 import File from "./file";
 import share from "./share";
 import log from "./log";
 
 export default [
-  ...TestApi,
+  ...OpsApi,
+  ...AuthApi,
   ...File,
   ...share,
   ...log,
