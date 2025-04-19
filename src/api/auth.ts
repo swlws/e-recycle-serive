@@ -12,7 +12,6 @@ const apis: ApiCfg[] = [
     },
     auth: false,
   },
-  
 ];
 
 export default apis;
