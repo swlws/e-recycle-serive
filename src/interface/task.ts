@@ -3,9 +3,9 @@ import { ReqWrapper } from "../lib/net-server";
 import { getHeaders } from "../tools/header";
 import { publish_task } from "../business/task/publish-task";
 import { query_all_task } from "../business/task/query_all_task";
-import { query_self_published_task } from "../business/task/query_self_published_task";
-import { query_sell_out_task } from "../business/task/query_sell_out_task";
-import { query_buy_in_task } from "../business/task/query_buy_in_task";
+import { query_user_published_task } from "../business/task/query_user_published_task";
+import { query_user_sell_out_task } from "../business/task/query_user_sell_out_task";
+import { query_user_buy_in_task } from "../business/task/query_user_buy_in_task";
 import { user_task_count } from "../business/task/task_count";
 
 /**
@@ -63,7 +63,7 @@ export async function i_query_all_task(
  * @param res
  * @param next
  */
-export async function i_query_self_published_task(
+export async function i_query_user_published_task(
   req: ReqWrapper,
   res: Response,
   next: Next
@@ -75,7 +75,7 @@ export async function i_query_self_published_task(
 
     ctx.data = {
       r0: 0,
-      res: await query_self_published_task(ctx, params, headers),
+      res: await query_user_published_task(ctx, params, headers),
     };
   } catch (e) {
     ctx.error = e;
@@ -91,7 +91,7 @@ export async function i_query_self_published_task(
  * @param res
  * @param next
  */
-export async function i_query_sell_out_task(
+export async function i_query_user_sell_out_task(
   req: ReqWrapper,
   res: Response,
   next: Next
@@ -103,7 +103,7 @@ export async function i_query_sell_out_task(
 
     ctx.data = {
       r0: 0,
-      res: await query_sell_out_task(ctx, params, headers),
+      res: await query_user_sell_out_task(ctx, params, headers),
     };
   } catch (e) {
     ctx.error = e;
@@ -119,7 +119,7 @@ export async function i_query_sell_out_task(
  * @param res
  * @param next
  */
-export async function i_query_bug_in_task(
+export async function i_query_user_buy_in_task(
   req: ReqWrapper,
   res: Response,
   next: Next
@@ -131,7 +131,7 @@ export async function i_query_bug_in_task(
 
     ctx.data = {
       r0: 0,
-      res: await query_buy_in_task(ctx, params, headers),
+      res: await query_user_buy_in_task(ctx, params, headers),
     };
   } catch (e) {
     ctx.error = e;

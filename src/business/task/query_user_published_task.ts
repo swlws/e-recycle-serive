@@ -5,16 +5,14 @@ import { ReqCtx } from "../../lib/net-server";
 import { toObjectId } from "../../tools/utils";
 import { ENUM_COLLECTION } from "../../constant/collection_name";
 import { query_table } from "../../helper/table_query";
-import { ENUM_TASK_STATE } from "../../constant/public";
 
 /**
- * 查询用户买入的任务
- *
+ * 自己发布过的任务
  * @param ctx
  * @param params
  * @param headers
  */
-export async function query_buy_in_task(
+export async function query_user_published_task(
   ctx: ReqCtx,
   params: any,
   headers: PlainObject
@@ -29,8 +27,7 @@ export async function query_buy_in_task(
   } = params;
 
   const query: PlainObject = {
-    dealwith: toObjectId(uid),
-    state: ENUM_TASK_STATE.RESOLVE,
+    uid: toObjectId(uid),
   };
 
   // 排序

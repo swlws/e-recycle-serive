@@ -8,12 +8,13 @@ import { query_table } from "../../helper/table_query";
 import { ENUM_TASK_STATE } from "../../constant/public";
 
 /**
- * 查询用户卖出的任务
+ * 查询用户买入的任务
+ *
  * @param ctx
  * @param params
  * @param headers
  */
-export async function query_sell_out_task(
+export async function query_user_buy_in_task(
   ctx: ReqCtx,
   params: any,
   headers: PlainObject
@@ -28,7 +29,7 @@ export async function query_sell_out_task(
   } = params;
 
   const query: PlainObject = {
-    uid: toObjectId(uid),
+    dealwith: toObjectId(uid),
     state: ENUM_TASK_STATE.RESOLVE,
   };
 

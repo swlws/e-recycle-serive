@@ -2,9 +2,9 @@ import { ApiCfg } from "../lib/net-server";
 import {
   i_publish_task,
   i_query_all_task,
-  i_query_bug_in_task,
-  i_query_self_published_task,
-  i_query_sell_out_task,
+  i_query_user_buy_in_task,
+  i_query_user_published_task,
+  i_query_user_sell_out_task,
   i_user_task_count,
 } from "../interface/task";
 
@@ -33,7 +33,7 @@ const apis: ApiCfg[] = [
     method: "post",
     handler: {
       version: "1.0.0",
-      cb: i_query_self_published_task,
+      cb: i_query_user_published_task,
     },
   },
   // 用户卖出的任务
@@ -42,7 +42,7 @@ const apis: ApiCfg[] = [
     method: "post",
     handler: {
       version: "1.0.0",
-      cb: i_query_sell_out_task,
+      cb: i_query_user_sell_out_task,
     },
   },
   // 用户买入的任务
@@ -51,7 +51,7 @@ const apis: ApiCfg[] = [
     method: "post",
     handler: {
       version: "1.0.0",
-      cb: i_query_bug_in_task,
+      cb: i_query_user_buy_in_task,
     },
   },
   // 用户的任务统计

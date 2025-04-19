@@ -1,9 +1,9 @@
 import { PlainObject } from "../../../typings/public";
 import { ReqCtx } from "../../lib/net-server";
 import { query_all_task } from "./query_all_task";
-import { query_self_published_task } from "./query_self_published_task";
-import { query_sell_out_task } from "./query_sell_out_task";
-import { query_buy_in_task } from "./query_buy_in_task";
+import { query_user_published_task } from "./query_user_published_task";
+import { query_user_sell_out_task } from "./query_user_sell_out_task";
+import { query_user_buy_in_task } from "./query_user_buy_in_task";
 
 /**
  * 任务统计
@@ -19,13 +19,13 @@ export async function user_task_count(
   params.page = 1;
   params.size = 1;
 
-  const publisedTaskInfo = await query_self_published_task(
+  const publisedTaskInfo = await query_user_published_task(
     ctx,
     params,
     headers
   );
-  const selloutTaskInfo = await query_sell_out_task(ctx, params, headers);
-  const buyinTaskInfo = await query_buy_in_task(ctx, params, headers);
+  const selloutTaskInfo = await query_user_sell_out_task(ctx, params, headers);
+  const buyinTaskInfo = await query_user_buy_in_task(ctx, params, headers);
 
   return {
     published: publisedTaskInfo.total,
