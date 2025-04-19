@@ -3,6 +3,7 @@ import { ReqWrapper } from "../lib/net-server";
 import { getHeaders } from "../tools/header";
 import { publish_task } from "../business/task/publish-task";
 import { query_all_task } from "../business/task/query_all_task";
+import { query_self_published_task } from "../business/task/query_self_published_task";
 
 /**
  * 发布任务
@@ -45,6 +46,34 @@ export async function i_query_all_task(
     const headers = getHeaders(req, false);
 
     ctx.data = { r0: 0, res: await query_all_task(ctx, params, headers) };
+  } catch (e) {
+    ctx.error = e;
+  } finally {
+    next();
+  }
+}
+
+/**
+ * 用户自己发布过的任务
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+export async function i_query_self_published_task(
+  req: ReqWrapper,
+  res: Response,
+  next: Next
+) {
+  const ctx = req.getCtx();
+  try {
+    const params = req.params;
+    const headers = getHeaders(req, false);
+
+    ctx.data = {
+      r0: 0,
+      res: await query_self_published_task(ctx, params, headers),
+    };
   } catch (e) {
     ctx.error = e;
   } finally {
