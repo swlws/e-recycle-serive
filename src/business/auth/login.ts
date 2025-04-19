@@ -55,13 +55,14 @@ export async function login(ctx: ReqCtx, params: any, headers: PlainObject) {
 
   // 创建用户
   const now = getNowYMDHMS();
+  const _id = new ObjectId();
   let newUser = {
-    _id: new ObjectId(),
+    _id,
     openid,
     phoneNumber,
     countryCode,
     nickName: generate_random_name(),
-    avatarUrl: "https://joesch.moe/api/v1/random",
+    avatarUrl: `https://robohash.org/${_id.toString()}`,
     createTime: now,
     updateTime: now,
     lastLoginTime: now,
