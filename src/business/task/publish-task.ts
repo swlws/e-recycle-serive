@@ -1,5 +1,6 @@
 import { PlainObject } from "../../../typings/public";
 import { ENUM_HEADERS } from "../../constant/headers";
+import { ENUM_TASK_STATE } from "../../constant/public";
 import { ReqCtx } from "../../lib/net-server";
 import { getNowYMDHMS } from "../../tools/time";
 import { toObjectId } from "../../tools/utils";
@@ -23,6 +24,7 @@ export async function publish_task(
   const info = {
     uid: toObjectId(uid),
     ...params,
+    state: ENUM_TASK_STATE.PENDDING,
     createTime: now,
     updateTime: now,
   };
