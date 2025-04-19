@@ -16,6 +16,10 @@ export async function update_user(
   const query = {
     _id: toObjectId(_id),
   };
+  const update = {
+    $set: params,
+  };
+
   const mongo = await getMongo();
-  return await mongo.findOneAndUpdate(ENUM_COLLECTION.T_USER, query, params);
+  return await mongo.findOneAndUpdate(ENUM_COLLECTION.T_USER, query, update);
 }
