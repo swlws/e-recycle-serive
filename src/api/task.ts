@@ -1,5 +1,6 @@
 import { ApiCfg } from "../lib/net-server";
 import {
+  i_finish_task,
   i_publish_task,
   i_query_all_task,
   i_query_user_buy_in_task,
@@ -71,6 +72,15 @@ const apis: ApiCfg[] = [
     handler: {
       version: "1.0.0",
       cb: i_remove_task,
+    },
+  },
+  // 完成任务
+  {
+    url: "/api/task/finish",
+    method: "post",
+    handler: {
+      version: "1.0.0",
+      cb: i_finish_task,
     },
   },
 ];

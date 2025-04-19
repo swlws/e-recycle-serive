@@ -8,6 +8,7 @@ import { query_user_sell_out_task } from "../business/task/query_user_sell_out_t
 import { query_user_buy_in_task } from "../business/task/query_user_buy_in_task";
 import { user_task_count } from "../business/task/task_count";
 import { remove_task } from "../business/task/remove_task";
+import { finish_task } from "../business/task/finish_task";
 
 /**
  * 发布任务
@@ -187,6 +188,31 @@ export async function i_remove_task(
     const headers = getHeaders(req, false);
 
     await remove_task(ctx, params, headers);
+  } catch (e) {
+    ctx.error = e;
+  } finally {
+    next();
+  }
+}
+
+/**
+ * 完成任务
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+export async function i_finish_task(
+  req: ReqWrapper,
+  res: Response,
+  next: Next
+) {
+  const ctx = req.getCtx();
+  try {
+    const params = req.params;
+    const headers = getHeaders(req, false);
+
+    await finish_task(ctx, params, headers);
   } catch (e) {
     ctx.error = e;
   } finally {
