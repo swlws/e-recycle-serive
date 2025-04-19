@@ -5,6 +5,7 @@ import {
   i_query_user_buy_in_task,
   i_query_user_published_task,
   i_query_user_sell_out_task,
+  i_remove_task,
   i_user_task_count,
 } from "../interface/task";
 
@@ -61,6 +62,15 @@ const apis: ApiCfg[] = [
     handler: {
       version: "1.0.0",
       cb: i_user_task_count,
+    },
+  },
+  // 删除任务
+  {
+    url: "/api/task/remove",
+    method: "post",
+    handler: {
+      version: "1.0.0",
+      cb: i_remove_task,
     },
   },
 ];
