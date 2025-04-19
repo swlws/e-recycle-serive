@@ -3,6 +3,7 @@ import {
   i_publish_task,
   i_query_all_task,
   i_query_self_published_task,
+  i_query_sell_out_task,
 } from "../interface/task";
 
 const apis: ApiCfg[] = [
@@ -31,6 +32,15 @@ const apis: ApiCfg[] = [
     handler: {
       version: "1.0.0",
       cb: i_query_self_published_task,
+    },
+  },
+  // 自己卖出的任务
+  {
+    url: "/api/task/self/sellout",
+    method: "post",
+    handler: {
+      version: "1.0.0",
+      cb: i_query_sell_out_task,
     },
   },
 ];
