@@ -8,6 +8,7 @@ import { getNowYMDHMS } from "../../tools/time";
 import { create_user } from "./helper/create_user";
 import { update_user } from "./helper/update_user";
 import { get_user_seesion_key } from "./helper/get_user_seesion_key";
+import { generate_random_name } from "./helper/random_name";
 
 // async function get_user_seesion_key(
 //   code: string
@@ -59,6 +60,8 @@ export async function login(ctx: ReqCtx, params: any, headers: PlainObject) {
     openid,
     phoneNumber,
     countryCode,
+    nickName: generate_random_name(),
+    avatarUrl: "https://joesch.moe/api/v1/random",
     createTime: now,
     updateTime: now,
     lastLoginTime: now,

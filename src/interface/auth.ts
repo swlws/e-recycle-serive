@@ -18,10 +18,7 @@ export async function i_login(req: ReqWrapper, res: Response, next: Next) {
 
     const res = await login(ctx, params, headers);
 
-    ctx.data = {
-      r0: 0,
-      res,
-    };
+    ctx.data = { r0: 0, res };
   } catch (e) {
     ctx.error = e;
   } finally {
@@ -46,7 +43,8 @@ export async function i_update_user_info(
     const headers = getHeaders(req, false);
 
     // 更新用户信息
-    await update_user_info(ctx, params, headers);
+    const res = await update_user_info(ctx, params, headers);
+    ctx.data = { r0: 0, res };
   } catch (e) {
     ctx.error = e;
   } finally {
