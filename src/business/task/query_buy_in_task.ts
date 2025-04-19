@@ -14,7 +14,7 @@ import { ENUM_TASK_STATE } from "../../constant/public";
  * @param params
  * @param headers
  */
-export async function query_bug_in_task(
+export async function query_buy_in_task(
   ctx: ReqCtx,
   params: any,
   headers: PlainObject

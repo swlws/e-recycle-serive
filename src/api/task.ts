@@ -5,6 +5,7 @@ import {
   i_query_bug_in_task,
   i_query_self_published_task,
   i_query_sell_out_task,
+  i_user_task_count,
 } from "../interface/task";
 
 const apis: ApiCfg[] = [
@@ -26,7 +27,7 @@ const apis: ApiCfg[] = [
       cb: i_query_all_task,
     },
   },
-  // 自己发布过的任务
+  // 用户发布过的任务
   {
     url: "/api/task/self/published",
     method: "post",
@@ -35,7 +36,7 @@ const apis: ApiCfg[] = [
       cb: i_query_self_published_task,
     },
   },
-  // 自己卖出的任务
+  // 用户卖出的任务
   {
     url: "/api/task/self/sellout",
     method: "post",
@@ -44,13 +45,22 @@ const apis: ApiCfg[] = [
       cb: i_query_sell_out_task,
     },
   },
-  // 自己买入的任务
+  // 用户买入的任务
   {
     url: "/api/task/self/buyin",
     method: "post",
     handler: {
       version: "1.0.0",
       cb: i_query_bug_in_task,
+    },
+  },
+  // 用户的任务统计
+  {
+    url: "/api/task/self/count",
+    method: "get",
+    handler: {
+      version: "1.0.0",
+      cb: i_user_task_count,
     },
   },
 ];

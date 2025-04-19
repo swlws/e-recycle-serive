@@ -17,8 +17,6 @@ export async function query_all_task(
   params: any,
   headers: PlainObject
 ) {
-  const uid = headers[ENUM_HEADERS.UID];
-
   const {
     page = 1,
     size = 20,
