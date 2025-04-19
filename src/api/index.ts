@@ -1,13 +1,15 @@
 import OpsApi from "./ops";
 import AuthApi from "./auth";
-import File from "./file";
-import share from "./share";
-import log from "./log";
+import TaskApi from "./task";
+import FileApi from "./file";
+import ShareApi from "./share";
+import LogAPi from "./log";
 
 export default [
   ...OpsApi,
   ...AuthApi,
-  ...File,
-  ...share,
-  ...log,
+  ...TaskApi,
+  ...FileApi,
+  ...ShareApi,
+  ...LogAPi,
 ];
