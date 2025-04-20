@@ -28,7 +28,6 @@ export async function query_all_task(
   const query: PlainObject = {};
   for (const key in rest) {
     if (["province", "city", "district"].includes(key)) {
-      query[key] = toObjectId(rest[key]);
       query[`location.${key}`] = rest[key];
     } else {
       query[key] = rest[key];
