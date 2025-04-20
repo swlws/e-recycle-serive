@@ -3,7 +3,32 @@ import { ReqCtx } from "../../lib/net-server";
 import { ENUM_HEADERS } from "../../constant/headers";
 import { query_wx_access_token } from "../../tools/wx_access_token";
 import { send_post } from "../../lib/http";
-import { check_required_keys } from "../../helper/check_required_key";
+import { find_user_via_id } from "../auth/helper/find_user";
+import { update_user_via_openid } from "../auth/helper/update_user";
+import FileCenter from "../../tools/file_center";
+
+/**
+ * 查询个人的分享二维码
+ * @param uid
+ * @returns
+ */
+async function query_qr_code_in_db(uid: string) {
+  const userInfo = await find_user_via_id(uid);
+
+  const openid = userInfo?.openid;
+  const shareQrCode = userInfo?.shareQrCode;
+
+  return [openid, shareQrCode];
+}
+
+/**
+ * 更新个人的分享二维码
+ * @param uid
+ * @param shareQrCode
+ */
+async function save_qr_code_in_db(opnid: string, shareQrCode: string) {
+  await update_user_via_openid(opnid, { shareQrCode });
+}
 
 /**
  * 获取个人的分享图片
@@ -16,14 +41,14 @@ export async function query_share_qr_code(
   params: { uid: string },
   headers: PlainObject
 ) {
-  check_required_keys(params, ["uid"]);
+  const uid = headers[ENUM_HEADERS.UID];
+
+  // 先从数据库查询
+  const [openid, shareQrCode] = await query_qr_code_in_db(uid);
+  if (shareQrCode) return shareQrCode;
 
   const wx_access_token = await query_wx_access_token();
-  if (!wx_access_token) {
-    return "";
-  }
-
-  const { uid } = params;
+  if (!wx_access_token) return "";
 
   const qr_code_url = `https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=${wx_access_token}`;
 
@@ -36,10 +61,19 @@ export async function query_share_qr_code(
 
   const result = await send_post(qr_code_url, code_params);
 
+  if (result instanceof Buffer) {
+    const cosStorePath = `/e/share_qr_code/${openid}.png`;
+    const rt = await FileCenter.uploadByBuffer(cosStorePath, result);
+    // 保存到数据库
+    await save_qr_code_in_db(openid, rt.Location);
+    //  COS 上的存储路径
+    return rt.Location;
+  }
+
   process.logger.info(
     "query_share_qr_code",
     result instanceof Buffer ? "Buffer" : result
   );
 
-  return result;
+  return "";
 }

@@ -13,4 +13,5 @@ export interface IUser {
   createTime: string;
   updateTime: string;
   lastLoginTime: string;
+  shareQrCode?: string;
 }

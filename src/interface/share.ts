@@ -19,15 +19,17 @@ export async function i_query_share_qr_code(
   try {
     const params = req.params;
     const headers = getHeaders(req, false);
-    const result = await query_share_qr_code(ctx, params, headers);
+    // const result = await query_share_qr_code(ctx, params, headers);
 
-    if (result instanceof Buffer) {
-      res.set("Content-Type", "image/png");
-      res.set("Cache-Control", "max-age=0, no-cache, no-store");
-    }
+    // if (result instanceof Buffer) {
+    //   res.set("Content-Type", "image/png");
+    //   res.set("Cache-Control", "max-age=0, no-cache, no-store");
+    // }
 
     // 请求成功时，返回 Buffer 类型；异常时，返回 Error 类型
-    ctx.data = result;
+    // ctx.data = result;
+
+    ctx.data = { r0: 0, res: await query_share_qr_code(ctx, params, headers) };
   } catch (e) {
     ctx.error = e;
   } finally {

@@ -55,6 +55,37 @@ class FileCenter {
   }
 
   /**
+   * 文件上传，使用 Buffer
+   * @param storeFilePath COS 上的存储路径
+   * @param willUploadBuffer 待上传的 Buffer
+   * @returns
+   */
+  uploadByBuffer(
+    storeFilePath: string,
+    willUploadBuffer: Buffer
+  ): Promise<{ Location: string }> {
+    return new Promise((resolve) => {
+      this._cosIns.putObject(
+        {
+          Bucket: config.Bucket,
+          Region: config.Region,
+          StorageClass: config.StorageClass as StorageClass,
+          Key: storeFilePath,
+          Body: willUploadBuffer,
+          ContentLength: willUploadBuffer.length,
+        },
+        function (error, data) {
+          if (error) {
+            process.logger.error(error);
+            return resolve({ Location: "" });
+          }
+          resolve(data);
+        }
+      );
+    });
+  }
+
+  /**
    * 删除文件
    * @param storeFilePath COS 上的存储路径
    * @returns
