@@ -4,6 +4,7 @@ import { ENUM_HEADERS } from "../../constant/headers";
 import { toObjectId } from "../../tools/utils";
 import { getMongo } from "../../lib/mongo";
 import { ENUM_COLLECTION } from "../../constant/collection_name";
+import { ENUM_TASK_STATE } from "../../constant/public";
 
 /**
  * 任务抢单
@@ -29,6 +30,7 @@ export async function take_task(
   const update = {
     $set: {
       dealwith: toObjectId(uid),
+      state: ENUM_TASK_STATE.WILL_RESOLVE,
     },
   };
 
