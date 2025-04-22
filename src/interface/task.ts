@@ -11,6 +11,7 @@ import { remove_task } from "../business/task/remove_task";
 import { finish_task } from "../business/task/finish_task";
 import { take_task } from "../business/task/take_task";
 import { query_one_task } from "../business/task/query_one_task";
+import { untake_task } from "../business/task/untake_task";
 
 /**
  * 发布任务
@@ -261,6 +262,31 @@ export async function i_take_task(req: ReqWrapper, res: Response, next: Next) {
     const headers = getHeaders(req, false);
 
     ctx.data = { r0: 0, res: await take_task(ctx, params, headers) };
+  } catch (e) {
+    ctx.error = e;
+  } finally {
+    next();
+  }
+}
+
+/**
+ * 放弃已抢到的任务
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+export async function i_untake_task(
+  req: ReqWrapper,
+  res: Response,
+  next: Next
+) {
+  const ctx = req.getCtx();
+  try {
+    const params = req.params;
+    const headers = getHeaders(req, false);
+
+    ctx.data = { r0: 0, res: await untake_task(ctx, params, headers) };
   } catch (e) {
     ctx.error = e;
   } finally {

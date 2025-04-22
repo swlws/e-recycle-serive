@@ -29,7 +29,7 @@ export async function query_user_buy_in_task(
   } = params;
 
   const query: PlainObject = {
-    dealwith: toObjectId(uid),
+    dealwithUid: toObjectId(uid),
     state: ENUM_TASK_STATE.RESOLVE,
   };
 

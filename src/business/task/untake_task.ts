@@ -5,41 +5,31 @@ import { toObjectId } from "../../tools/utils";
 import { getMongo } from "../../lib/mongo";
 import { ENUM_COLLECTION } from "../../constant/collection_name";
 import { ENUM_TASK_STATE } from "../../constant/public";
-import { find_user_via_id } from "../auth/helper/find_user";
 
 /**
- * 任务抢单
+ * 放弃已抢到的任务
  *
  * @param ctx
  * @param params
  * @param headers
  */
-export async function take_task(
+export async function untake_task(
   ctx: ReqCtx,
   params: any,
   headers: PlainObject
 ) {
   const uid = headers[ENUM_HEADERS.UID];
 
-  const userInfo = await find_user_via_id(uid);
-  if (!userInfo) {
-    throw new Error("user not found");
-  }
-
   const query = {
     _id: toObjectId(params._id),
-    $or: [
-      { dealWithUid: { $exists: false } },
-      { dealWithUid: null },
-      { dealWithUid: "" },
-    ],
+    dealWithUid: toObjectId(uid),
   };
   const update = {
     $set: {
-      dealWithUid: toObjectId(uid),
-      dealwithPerson: userInfo.nickName,
-      dealWithPhoneNumber: userInfo.phoneNumber,
-      state: ENUM_TASK_STATE.WILL_RESOLVE,
+      dealWithUid: null,
+      dealwithPerson: null,
+      dealWithPhoneNumber: null,
+      state: ENUM_TASK_STATE.PENDDING,
     },
   };
 

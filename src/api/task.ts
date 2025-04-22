@@ -9,6 +9,7 @@ import {
   i_query_user_sell_out_task,
   i_remove_task,
   i_take_task,
+  i_untake_task,
   i_user_task_count,
 } from "../interface/task";
 
@@ -101,6 +102,15 @@ const apis: ApiCfg[] = [
     handler: {
       version: "1.0.0",
       cb: i_take_task,
+    },
+  },
+  // 放弃已抢到的任务
+  {
+    url: "/api/task/untake",
+    method: "post",
+    handler: {
+      version: "1.0.0",
+      cb: i_untake_task,
     },
   },
 ];
