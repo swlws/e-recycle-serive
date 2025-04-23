@@ -12,6 +12,7 @@ import { finish_task } from "../business/task/finish_task";
 import { take_task } from "../business/task/take_task";
 import { query_one_task } from "../business/task/query_one_task";
 import { untake_task } from "../business/task/untake_task";
+import { query_user_in_trading_task } from "../business/task/query_user_in_trading_task";
 
 /**
  * 发布任务
@@ -106,6 +107,33 @@ export async function i_query_user_published_task(
     ctx.data = {
       r0: 0,
       res: await query_user_published_task(ctx, params, headers),
+    };
+  } catch (e) {
+    ctx.error = e;
+  } finally {
+    next();
+  }
+}
+
+/**
+ * 查询用户处于交易中的任务
+ * @param req
+ * @param res
+ * @param next
+ */
+export async function i_query_user_in_trading_task(
+  req: ReqWrapper,
+  res: Response,
+  next: Next
+) {
+  const ctx = req.getCtx();
+  try {
+    const params = req.params;
+    const headers = getHeaders(req, false);
+
+    ctx.data = {
+      r0: 0,
+      res: await query_user_in_trading_task(ctx, params, headers),
     };
   } catch (e) {
     ctx.error = e;

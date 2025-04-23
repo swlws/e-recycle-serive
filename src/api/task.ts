@@ -5,6 +5,7 @@ import {
   i_query_all_task,
   i_query_one_task,
   i_query_user_buy_in_task,
+  i_query_user_in_trading_task,
   i_query_user_published_task,
   i_query_user_sell_out_task,
   i_remove_task,
@@ -48,6 +49,15 @@ const apis: ApiCfg[] = [
     handler: {
       version: "1.0.0",
       cb: i_query_user_published_task,
+    },
+  },
+  // 查询用户处于交易中的任务
+  {
+    url: "/api/task/user/in_trading",
+    method: "post",
+    handler: {
+      version: "1.0.0",
+      cb: i_query_user_in_trading_task,
     },
   },
   // 用户卖出的任务
