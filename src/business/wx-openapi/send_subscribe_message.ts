@@ -1,3 +1,4 @@
+import { ENUM_WX_ENV } from "../../constant/public";
 import { send_post } from "../../lib/http";
 
 export enum TemplateId {
@@ -78,6 +79,17 @@ export interface SendSubscribeMessageBody {
   miniprogram_state?: "developer" | "trial" | "formal";
 }
 
+function envMap(env: ENUM_WX_ENV) {
+  switch (env) {
+    case ENUM_WX_ENV.RELEASE:
+      return "formal";
+    case ENUM_WX_ENV.DEVELOP:
+      return "developer";
+    case ENUM_WX_ENV.TRIAL:
+      return "trial";
+  }
+}
+
 /**
  * 发送订阅消息
  * @param access_token
@@ -85,9 +97,13 @@ export interface SendSubscribeMessageBody {
  * @returns
  */
 export function send_subscribe_message(
+  env: ENUM_WX_ENV,
   access_token: string,
   params: SendSubscribeMessageBody
 ): Promise<any> {
   const url = `https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=${access_token}`;
+
+  params.miniprogram_state = envMap(env);
+
   return send_post(url, params);
 }
