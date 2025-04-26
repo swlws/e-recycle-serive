@@ -1,9 +1,9 @@
 import restify, { Request, Response, Next, RequestHandler } from "restify";
 import http from "http";
 import CustomError, { ENUM_CUSTOM_ERROR_CODE } from "./custom-error";
-import createLogger from "./logger";
 import Logger from "bunyan";
 import { getMongo } from "./mongo";
+import logger from "./logger";
 
 const REQUEST_CONTEXT_KEY = "r_ctx";
 
@@ -83,7 +83,8 @@ export default class NetServer {
     this.option = option;
     process.title = option.name;
 
-    this.logger = createLogger(option.name);
+    // this.logger = createLogger(option.name);
+    this.logger = logger;
     process.logger = this.logger;
 
     this.server = restify.createServer({

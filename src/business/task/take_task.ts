@@ -12,13 +12,14 @@ import {
   WhenUserTakeTaskBody,
 } from "../wx-openapi/send_subscribe_message";
 import { query_wx_access_token } from "../../tools/wx_access_token";
+import logger from "../../lib/logger";
 
 async function notify_publisher(env: string, taskId: string) {
   const query = { _id: toObjectId(taskId) };
 
   const mongo = await getMongo();
   const taskInfo = await mongo.findOne(ENUM_COLLECTION.T_TASK, query);
-  if (!taskInfo) return;
+  if (!taskInfo) return false;
 
   const {
     _id,
@@ -27,16 +28,16 @@ async function notify_publisher(env: string, taskId: string) {
   } = taskInfo;
   const whenUserTakeTaskBody: WhenUserTakeTaskBody = {
     character_string1: {
-      DATA: _id.toString(),
+      value: _id.toString(),
     },
     name3: {
-      DATA: name3,
+      value: name3,
     },
     phone_number6: {
-      DATA: phone_number6,
+      value: phone_number6,
     },
     thing11: {
-      DATA: "您发布的任务已被接单",
+      value: "您发布的任务已被接单",
     },
   };
 
@@ -47,8 +48,10 @@ async function notify_publisher(env: string, taskId: string) {
   await send_subscribe_message(env as ENUM_WX_ENV, access_token, {
     touser: userInfo.openid,
     template_id: TemplateId.WHEN_USER_TAKE_TASK,
+    page: `/pages/task-detail/index?_id=${_id.toString()}`,
     data: whenUserTakeTaskBody,
   });
+  return true;
 }
 
 /**
@@ -65,6 +68,8 @@ export async function take_task(
 ) {
   const uid = headers[ENUM_HEADERS.UID];
   const env = headers[ENUM_HEADERS.ENV];
+
+  logger.info("uid", uid, "env", env);
 
   const userInfo = await find_user_via_id(uid);
   if (!userInfo) {

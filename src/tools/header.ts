@@ -1,5 +1,6 @@
 import { PlainObject } from "../../typings/public";
 import { ENUM_HEADERS } from "../constant/headers";
+import logger from "../lib/logger";
 import { ReqWrapper } from "../lib/net-server";
 
 /**
@@ -12,7 +13,7 @@ export function getHeaders(
   req: ReqWrapper,
   throwException = true
 ): PlainObject {
-  const keys = [ENUM_HEADERS.UID];
+  const keys = [ENUM_HEADERS.UID, ENUM_HEADERS.ENV];
 
   const headers: PlainObject = {};
   for (const key of keys) {
@@ -23,6 +24,8 @@ export function getHeaders(
       throw new Error(`The Header Field [ ${key} ] Is Required.`);
     }
   }
+
+  logger.info(`[ getHeaders ] - ${JSON.stringify(headers)}`);
 
   return headers;
 }

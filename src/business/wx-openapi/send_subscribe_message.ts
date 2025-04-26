@@ -14,19 +14,19 @@ export enum TemplateId {
 export type WhenUserTakeTaskBody = {
   // 订单编号
   character_string1: {
-    DATA: string;
+    value: string;
   };
   // 师傅姓名
   name3: {
-    DATA: string;
+    value: string;
   };
   // 师傅电话
   phone_number6: {
-    DATA: string;
+    value: string;
   };
   // 温馨提示
   thing11: {
-    DATA: string;
+    value: string;
   };
 };
 
@@ -34,15 +34,15 @@ export type WhenUserTakeTaskBody = {
 export type WhenUserUntakeTaskBody = {
   // 订单编号
   character_string1: {
-    DATA: string;
+    value: string;
   };
   // 师傅姓名
   thing4: {
-    DATA: string;
+    value: string;
   };
   // 温馨提示
   thing5: {
-    DATA: string;
+    value: string;
   };
 };
 
@@ -50,19 +50,19 @@ export type WhenUserUntakeTaskBody = {
 export type WhenDeleteTaskBody = {
   // 工单编号
   character_string33: {
-    DATA: string;
+    value: string;
   };
   // 原服务时间
   date7: {
-    DATA: string;
+    value: string;
   };
   // 取消时间
   date8: {
-    DATA: string;
+    value: string;
   };
   // 取消理由
   thing6: {
-    DATA: string;
+    value: string;
   };
 };
 
@@ -100,10 +100,13 @@ export function send_subscribe_message(
   env: ENUM_WX_ENV,
   access_token: string,
   params: SendSubscribeMessageBody
-): Promise<any> {
+) {
   const url = `https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=${access_token}`;
 
   params.miniprogram_state = envMap(env);
 
-  return send_post(url, params);
+  return send_post(url, params).then((res) => {
+    console.log("send_subscribe_message", res);
+    return res;
+  });
 }
