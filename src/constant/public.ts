@@ -8,7 +8,7 @@ export enum ENUM_TASK_STATE {
 }
 
 /**
- * 微信环境
+ * 微信环境, taro 给出的统一值
  */
 export enum ENUM_WX_ENV {
   /** 正式版  */
