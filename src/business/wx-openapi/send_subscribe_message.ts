@@ -7,7 +7,7 @@ export enum TemplateId {
   /** 当师傅取消订单 */
   WHEN_USER_UNTAKE_TASK = "RgYL3cHvNJXFjDCWR_joPDx-7k7QnYuejQ7HR2khHNc",
   /** 当发布者删除任务 */
-  when_delete_task = "TV8NHyuOumNGad-rX-LqzvvUfzsr491aXKKjgvUlrww",
+  WHEN_DELETE_TASK = "TV8NHyuOumNGad-rX-LqzvvUfzsr491aXKKjgvUlrww",
 }
 
 /** 消息体 - 接单 */

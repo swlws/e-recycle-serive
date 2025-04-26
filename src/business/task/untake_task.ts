@@ -22,7 +22,7 @@ async function notify_publisher(env: string, taskInfo: any) {
     dealwithPerson: name3,
     dealWithPhoneNumber: phone_number6,
   } = taskInfo;
-  const whenUserTakeTaskBody: WhenUserUntakeTaskBody = {
+  const whenUserUntakeTaskBody: WhenUserUntakeTaskBody = {
     character_string1: {
       value: _id.toString(),
     },
@@ -42,7 +42,7 @@ async function notify_publisher(env: string, taskInfo: any) {
     touser: userInfo.openid,
     template_id: TemplateId.WHEN_USER_UNTAKE_TASK,
     page: `/pages/task-detail/index?_id=${_id.toString()}`,
-    data: whenUserTakeTaskBody,
+    data: whenUserUntakeTaskBody,
   });
   return true;
 }
