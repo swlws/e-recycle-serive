@@ -14,7 +14,7 @@ import { find_task_via_id } from "./helper/find_task";
 import logger from "../../lib/logger";
 import { find_user_via_id } from "../auth/helper/find_user";
 import { query_wx_access_token } from "../../tools/wx_access_token";
-import { ENUM_WX_ENV } from "../../constant/public";
+import { ENUM_PATH_PATH, ENUM_WX_ENV } from "../../constant/public";
 import { getNowYMDHMS } from "../../tools/time";
 
 async function notify_publisher(env: string, taskInfo: any) {
@@ -47,7 +47,7 @@ async function notify_publisher(env: string, taskInfo: any) {
     touser: userInfo.openid,
     template_id: TemplateId.WHEN_DELETE_TASK,
     // 页面 - 个人交易中的任务列表
-    page: `/pages/in-trading-list/index`,
+    page: `${ENUM_PATH_PATH.IN_TRADING_LIST}`,
     data: whenDeleteTaskBody,
   });
   return true;

@@ -4,7 +4,11 @@ import { ENUM_HEADERS } from "../../constant/headers";
 import { toObjectId } from "../../tools/utils";
 import { getMongo } from "../../lib/mongo";
 import { ENUM_COLLECTION } from "../../constant/collection_name";
-import { ENUM_TASK_STATE, ENUM_WX_ENV } from "../../constant/public";
+import {
+  ENUM_PATH_PATH,
+  ENUM_TASK_STATE,
+  ENUM_WX_ENV,
+} from "../../constant/public";
 import { find_user_via_id } from "../auth/helper/find_user";
 import {
   send_subscribe_message,
@@ -48,7 +52,7 @@ async function notify_publisher(env: string, taskId: string) {
   await send_subscribe_message(env as ENUM_WX_ENV, access_token, {
     touser: userInfo.openid,
     template_id: TemplateId.WHEN_USER_TAKE_TASK,
-    page: `/pages/task-detail/index?_id=${_id.toString()}`,
+    page: `${ENUM_PATH_PATH.TASK_DETAIL}?_id=${_id.toString()}`,
     data: whenUserTakeTaskBody,
   });
   return true;
