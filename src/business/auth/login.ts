@@ -9,19 +9,7 @@ import { create_user } from "./helper/create_user";
 import { update_user } from "./helper/update_user";
 import { get_user_seesion_key } from "./helper/get_user_seesion_key";
 import { generate_random_name } from "./helper/random_name";
-
-// async function get_user_seesion_key(
-//   code: string
-// ): Promise<{ session_key: string; openid: string }> {
-//   const sessionInfo = await get_user_session_info(code);
-
-//   if (!sessionInfo || !sessionInfo.session_key || !sessionInfo.openid) {
-//     console.error("获取用户session_key失败", sessionInfo);
-//     throw new Error("获取用户session_key失败");
-//   }
-
-//   return sessionInfo;
-// }
+import { increase_score_for_invitation } from "../score/helper/increase_score_for_invitation";
 
 /**
  * 登录
@@ -30,7 +18,7 @@ import { generate_random_name } from "./helper/random_name";
  * @param headers
  */
 export async function login(ctx: ReqCtx, params: any, headers: PlainObject) {
-  const { iv, encryptedData, code } = params;
+  const { iv, encryptedData, code, inviter } = params;
 
   // 获取用户session_key
   const { session_key, openid } = await get_user_seesion_key(code);
@@ -67,6 +55,13 @@ export async function login(ctx: ReqCtx, params: any, headers: PlainObject) {
     updateTime: now,
     lastLoginTime: now,
   };
+
   await create_user(newUser);
+
+  // 如果有邀请者，增加邀请者的积分
+  if (inviter) {
+    await increase_score_for_invitation(inviter, newUser);
+  }
+
   return newUser;
 }

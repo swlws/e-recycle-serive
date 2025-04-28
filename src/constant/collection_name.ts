@@ -16,4 +16,6 @@ export enum ENUM_COLLECTION {
    * 用户指标
    */
   T_TASK = "t_task",
+
+  T_SCORE = "t_score",
 }

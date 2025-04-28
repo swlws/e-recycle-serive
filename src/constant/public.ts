@@ -38,3 +38,14 @@ export enum ENUM_PATH_PATH {
   /** 分享个人二维码 */
   USER_QR_CODE = "/packageC/pages/user-qr-code/index",
 }
+
+/** 积分来源类型 */
+export enum ENUM_SCORE_SOURCE_TYPE {
+  /** 邀请 */
+  INVITE = "invite",
+}
+
+/** 积分来源类型对应的得分 */
+export const SCORE_SOURCE_TYPE_MAP = {
+  [ENUM_SCORE_SOURCE_TYPE.INVITE]: 10,
+}
