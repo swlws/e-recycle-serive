@@ -1,5 +1,8 @@
 import { ApiCfg } from "../lib/net-server";
-import { i_query_user_score, i_query_user_score_list } from "../interface/score";
+import {
+  i_query_user_score,
+  i_query_user_score_list,
+} from "../interface/score";
 
 const apis: ApiCfg[] = [
   //
@@ -13,7 +16,7 @@ const apis: ApiCfg[] = [
   },
   {
     url: "/api/user/score_list",
-    method: "get",
+    method: "post",
     handler: {
       version: "1.0.0",
       cb: i_query_user_score_list,
