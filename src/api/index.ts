@@ -4,6 +4,7 @@ import TaskApi from "./task";
 import FileApi from "./file";
 import ShareApi from "./share";
 import LogAPi from "./log";
+import ScoreApi from "./score";
 
 export default [
   ...OpsApi,
@@ -12,4 +13,5 @@ export default [
   ...FileApi,
   ...ShareApi,
   ...LogAPi,
+  ...ScoreApi,
 ];
