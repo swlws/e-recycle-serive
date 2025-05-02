@@ -2,7 +2,6 @@ import { ENUM_HEADERS } from "../../constant/headers";
 import { PlainObject } from "../../../typings/public";
 import { ENUM_COLLECTION } from "../../constant/collection_name";
 import { ReqCtx } from "../../lib/net-server";
-import { toObjectId } from "../../tools/utils";
 import { getMongo } from "../../lib/mongo";
 import { getNowYMDHMS } from "../../tools/time";
 
@@ -17,8 +16,8 @@ export async function insert_log(
   params: any,
   headers: PlainObject
 ) {
-  let uid = headers[ENUM_HEADERS.UID];
-  uid = uid ? toObjectId(uid) : "";
+  const env = headers[ENUM_HEADERS.ENV];
+  const uid = headers[ENUM_HEADERS.UID];
 
   const list: any[] = [];
   if (Array.isArray(params)) {
@@ -32,9 +31,10 @@ export async function insert_log(
   const rows = [];
   for (const param of list) {
     rows.push({
+      env,
       uid,
-      content: param,
-      create_at: now,
+      payload: param,
+      createTime: now,
     });
   }
 
