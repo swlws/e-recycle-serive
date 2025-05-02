@@ -2,9 +2,14 @@
  * 任务状态
  */
 export enum ENUM_TASK_STATE {
+  // 初始态
   PENDDING = "PENDDING",
-  WILL_RESOLVE = "WILL_RESOLVE", // 即将执行
+  // 即将执行 - 任务已被接单
+  WILL_RESOLVE = "WILL_RESOLVE",
+  // 任务完成
   RESOLVE = "RESOLVE",
+  // 过期
+  INVALID = "INVALID",
 }
 
 /**
@@ -48,4 +53,4 @@ export enum ENUM_SCORE_SOURCE_TYPE {
 /** 积分来源类型对应的得分 */
 export const SCORE_SOURCE_TYPE_MAP = {
   [ENUM_SCORE_SOURCE_TYPE.INVITE]: 10,
-}
+};

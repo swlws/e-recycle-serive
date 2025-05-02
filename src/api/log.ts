@@ -4,7 +4,7 @@ import { i_insert_log } from "../interface/log";
 const apis: ApiCfg[] = [
   // 添加日志
   {
-    url: "/api/log/insert",
+    url: "/api/log/record",
     method: "post",
     handler: {
       version: "1.0.0",
