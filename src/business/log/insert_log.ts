@@ -40,11 +40,11 @@ export async function batch_insert_log(
  */
 export async function insert_log(
   ctx: ReqCtx,
-  params: any,
+  params: PlainObject,
   headers: PlainObject
 ) {
   const env = headers[ENUM_HEADERS.ENV];
   const uid = headers[ENUM_HEADERS.UID];
 
-  await batch_insert_log(params, { env, uid });
+  await batch_insert_log(params.list, { env, uid });
 }

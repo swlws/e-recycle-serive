@@ -7,6 +7,7 @@ import { find_user_via_id } from "../auth/helper/find_user";
 import { update_user_via_openid } from "../auth/helper/update_user";
 import FileCenter from "../../tools/file_center";
 import { ENUM_WX_ENV } from "../../constant/public";
+import logger from "../../lib/logger";
 
 function getQrCodeKey(env: ENUM_WX_ENV) {
   return `${env}QrCode`;
@@ -23,6 +24,11 @@ async function query_qr_code_in_db(uid: string, env: ENUM_WX_ENV) {
   const openid = userInfo?.openid;
   const qrCodeKey = getQrCodeKey(env);
   const shareQrCode = userInfo?.[qrCodeKey];
+
+  logger.info("query_qr_code_in_db", {
+    openid,
+    shareQrCode,
+  });
 
   return [openid, shareQrCode];
 }
