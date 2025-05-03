@@ -35,5 +35,5 @@ export async function query_user_score_list(
     sort,
   };
 
-  return await query_table(ENUM_COLLECTION.T_TASK, query, options, page, size);
+  return await query_table(ENUM_COLLECTION.T_SCORE, query, options, page, size);
 }
