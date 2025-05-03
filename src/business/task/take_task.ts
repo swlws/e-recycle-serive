@@ -17,6 +17,7 @@ import {
 } from "../wx-openapi/send_subscribe_message";
 import { query_wx_access_token } from "../../tools/wx_access_token";
 import logger from "../../lib/logger";
+import { phoneNumberFormatter } from "../../tools/formatter";
 
 async function notify_publisher(env: string, taskId: string) {
   const query = { _id: toObjectId(taskId) };
@@ -38,7 +39,7 @@ async function notify_publisher(env: string, taskId: string) {
       value: name3,
     },
     phone_number6: {
-      value: phone_number6,
+      value: phoneNumberFormatter(phone_number6, true),
     },
     thing11: {
       value: "您发布的任务已被接单",
