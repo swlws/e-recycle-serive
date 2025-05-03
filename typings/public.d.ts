@@ -28,3 +28,16 @@ export interface TableResult<T> {
   total: number; // 总条数
   list: T[]; // 列表数据
 }
+
+/**
+ * 日志类型
+ */
+export type LogType = "custom" | "system";
+
+/**
+ * 日志参数
+ */
+export interface LogPayload {
+  type: LogType;
+  [key: string]: any;
+}

@@ -380,7 +380,7 @@ class MongoAccess {
     let successFlag = r.acknowledged;
 
     if (successFlag) {
-      return r.upsertedId;
+      return r;
     } else {
       let upsertManyErr = new Error(
         `upsertManyErr successFlag: [${successFlag}]`

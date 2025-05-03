@@ -1,29 +1,19 @@
 import { ENUM_HEADERS } from "../../constant/headers";
-import { PlainObject } from "../../../typings/public";
+import { LogPayload, PlainObject } from "../../../typings/public";
 import { ENUM_COLLECTION } from "../../constant/collection_name";
 import { ReqCtx } from "../../lib/net-server";
 import { getMongo } from "../../lib/mongo";
 import { getNowYMDHMS } from "../../tools/time";
 
-/**
- * 添加日志记录
- *
- * @param ctx
- * @param info
- */
-export async function insert_log(
-  ctx: ReqCtx,
-  params: any,
-  headers: PlainObject
+export async function batch_insert_log(
+  payload: LogPayload | LogPayload[],
+  { env = "", uid = "" } = {}
 ) {
-  const env = headers[ENUM_HEADERS.ENV];
-  const uid = headers[ENUM_HEADERS.UID];
-
   const list: any[] = [];
-  if (Array.isArray(params)) {
-    list.push(...params);
+  if (Array.isArray(payload)) {
+    list.push(...payload);
   } else {
-    list.push(params);
+    list.push(payload);
   }
 
   const now = getNowYMDHMS();
@@ -40,4 +30,21 @@ export async function insert_log(
 
   const mongo = await getMongo();
   await mongo.insertMany(ENUM_COLLECTION.T_LOG, rows);
+}
+
+/**
+ * 添加日志记录
+ *
+ * @param ctx
+ * @param info
+ */
+export async function insert_log(
+  ctx: ReqCtx,
+  params: any,
+  headers: PlainObject
+) {
+  const env = headers[ENUM_HEADERS.ENV];
+  const uid = headers[ENUM_HEADERS.UID];
+
+  await batch_insert_log(params, { env, uid });
 }

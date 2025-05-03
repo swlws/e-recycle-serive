@@ -2,6 +2,8 @@ import { getMongo } from "../lib/mongo";
 import { ENUM_COLLECTION } from "../constant/collection_name";
 import { ENUM_TASK_STATE } from "../constant/public";
 import logger from "../lib/logger";
+import { getNowYMDHMS } from "../tools/time";
+import { batch_insert_log } from "../business/log/insert_log";
 
 export async function check_invalid_task() {
   try {
@@ -10,15 +12,13 @@ export async function check_invalid_task() {
 
     // 查找并更新所有执行时间大于当前时间的任务
     const query = {
-      pickupTime: { $lt: now },
+      pickupTime: { $lt: getNowYMDHMS() },
       state: { $ne: ENUM_TASK_STATE.INVALID },
     };
 
     const update = {
-      $set: {
-        state: ENUM_TASK_STATE.INVALID,
-        updateTime: now,
-      },
+      state: ENUM_TASK_STATE.INVALID,
+      updateTime: now,
     };
 
     const result = await mongo.updateMany(
@@ -28,12 +28,14 @@ export async function check_invalid_task() {
       {}
     );
 
-    console.log(`成功将 ${result} 个过期任务设置为无效状态`);
-    logger.info(`成功将 ${result} 个过期任务设置为无效状态`);
+    const { modifiedCount } = result;
+
+    await batch_insert_log({
+      type: "system",
+      content: `成功将 ${modifiedCount} 个过期任务设置为无效状态`,
+    });
+    logger.info(`成功将 ${modifiedCount} 个过期任务设置为无效状态`);
   } catch (error) {
-    console.error("更新任务状态时发生错误:", error);
     logger.error("更新任务状态时发生错误:", error);
   }
 }
-
-check_invalid_task();
