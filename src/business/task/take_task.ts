@@ -83,11 +83,12 @@ export async function take_task(
 
   const query = {
     _id: toObjectId(params._id),
-    $or: [
-      { dealWithUid: { $exists: false } },
-      { dealWithUid: null },
-      { dealWithUid: "" },
-    ],
+    state: ENUM_TASK_STATE.PENDDING,
+    // $or: [
+    //   { dealWithUid: { $exists: false } },
+    //   { dealWithUid: null },
+    //   { dealWithUid: "" },
+    // ],
   };
   const update = {
     $set: {

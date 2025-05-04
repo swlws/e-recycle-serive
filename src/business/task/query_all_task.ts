@@ -5,6 +5,7 @@ import { ReqCtx } from "../../lib/net-server";
 import { toObjectId } from "../../tools/utils";
 import { ENUM_COLLECTION } from "../../constant/collection_name";
 import { query_table } from "../../helper/table_query";
+import { ENUM_TASK_STATE } from "../../constant/public";
 
 /**
  * 发布任务
@@ -33,6 +34,9 @@ export async function query_all_task(
       query[key] = rest[key];
     }
   }
+
+  // 可接单的任务
+  query.state = ENUM_TASK_STATE.PENDDING;
 
   // 排序
   const sort: PlainObject = {};
