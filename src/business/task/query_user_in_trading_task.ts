@@ -30,7 +30,7 @@ export async function query_user_in_trading_task(
 
   const query = {
     uid: toObjectId(uid),
-    state: { $ne: ENUM_TASK_STATE.RESOLVE },
+    state: { $eq: ENUM_TASK_STATE.WILL_RESOLVE },
     dealWithUid: { $exists: true, $nin: [null, ""] },
   };
 
