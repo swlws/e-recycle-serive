@@ -14,10 +14,12 @@ export async function query_user_score(
   const mongo = await getMongo();
 
   // 查询积分总数
-  const totalScoreResult: any = await mongo.aggregate(ENUM_COLLECTION.T_SCORE, [
-    { $match: { uid: { $eq: toObjectId(uid) } } },
-    { $group: { _id: "$uid", sum: { $sum: "$score" } } },
-  ]);
+  const totalScoreResult: any = await mongo
+    .aggregate(ENUM_COLLECTION.T_SCORE, [
+      { $match: { uid: { $eq: toObjectId(uid) } } },
+      { $group: { _id: "$uid", sum: { $sum: "$score" } } },
+    ])
+    .then((cursor) => cursor.toArray());
 
-  return totalScoreResult.length > 0 ? totalScoreResult[0].sum : 0;;
+  return totalScoreResult.length > 0 ? totalScoreResult[0].sum : 0;
 }
