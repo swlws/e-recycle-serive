@@ -16,8 +16,10 @@ import {
   WhenUserTakeTaskBody,
 } from "../wx-openapi/send_subscribe_message";
 import { query_wx_access_token } from "../../tools/wx_access_token";
-import logger from "../../lib/logger";
 import { phoneNumberFormatter } from "../../tools/formatter";
+import CustomError from "../../lib/custom-error";
+import { getNowYMDHMS } from "../../tools/time";
+import { count_user_now_day_take_task } from "./helper/count_user_now_day_take_task";
 
 async function notify_publisher(env: string, taskId: string) {
   const query = { _id: toObjectId(taskId) };
@@ -74,11 +76,15 @@ export async function take_task(
   const uid = headers[ENUM_HEADERS.UID];
   const env = headers[ENUM_HEADERS.ENV];
 
-  logger.info("uid", uid, "env", env);
+  // 当日接单数量限制
+  const limit = 10;
+  if ((await count_user_now_day_take_task(uid)) >= limit) {
+    throw new CustomError("今日接单已达上限，请先完成已接任务");
+  }
 
   const userInfo = await find_user_via_id(uid);
   if (!userInfo) {
-    throw new Error("user not found");
+    throw new Error("无效用户，无法接单");
   }
 
   const query = {
@@ -95,6 +101,7 @@ export async function take_task(
       dealWithUid: toObjectId(uid),
       dealwithPerson: userInfo.nickName,
       dealWithPhoneNumber: userInfo.phoneNumber,
+      takeTime: getNowYMDHMS(),
       state: ENUM_TASK_STATE.WILL_RESOLVE,
     },
   };
