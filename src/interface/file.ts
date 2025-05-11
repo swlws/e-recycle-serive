@@ -20,7 +20,7 @@ export async function i_upload_file(
     const file = req.files?.file;
 
     const params = req.params;
-    const headers = getHeaders(req);
+    const headers = getHeaders(req, false);
     const result = await upload_file(ctx, { ...params, file }, headers);
 
     ctx.data = {

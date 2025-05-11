@@ -16,6 +16,7 @@ import { find_user_via_id } from "../auth/helper/find_user";
 import { query_wx_access_token } from "../../tools/wx_access_token";
 import { ENUM_PATH_PATH, ENUM_WX_ENV } from "../../constant/public";
 import { getNowYMDHMS } from "../../tools/time";
+import file_center from "../../tools/file_center";
 
 async function notify_publisher(env: string, taskInfo: any) {
   if (!taskInfo) return false;
@@ -54,6 +55,33 @@ async function notify_publisher(env: string, taskInfo: any) {
 }
 
 /**
+ * 删除远程 COS 图片
+ * @param taskInfo
+ * @returns
+ */
+function delete_remote_image(taskInfo: any) {
+  if (!taskInfo) return false;
+  const { snapshot } = taskInfo;
+  if (!snapshot || snapshot.length === 0) return false;
+
+  for (const item of snapshot) {
+    const path = parse_path(item.url);
+    if (!path) continue;
+    file_center.rm(path);
+  }
+  return true;
+}
+
+function parse_path(url: string) {
+  if (!url) return "";
+  try {
+    return new URL(url).pathname;
+  } catch (error) {
+    return "";
+  }
+}
+
+/**
  * 删除任务
  *
  * @param ctx
@@ -78,6 +106,9 @@ export async function remove_task(
   try {
     const mongo = await getMongo();
     await mongo.findOneAndDelete(ENUM_COLLECTION.T_TASK, query);
+
+    // 删除远程图片
+    delete_remote_image(taskInfo);
 
     // 通知任务接受者
     notify_publisher(env, taskInfo);

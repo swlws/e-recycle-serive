@@ -10,6 +10,7 @@ const apis: ApiCfg[] = [
       version: "1.0.0",
       cb: i_upload_file,
     },
+    auth: false,
   },
 ];
 
