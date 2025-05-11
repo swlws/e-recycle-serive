@@ -1,8 +1,32 @@
 #!/bin/bash
 
+# 定义服务器选项数组
+options=(
+    "dev - root@dev.swlws.site"
+    "prod - root@12.swlws.site"
+)
+
+# 显示服务器列表
+echo "可用的服务器列表（共 ${#options[@]} 个）："
+PS3="请选择目标服务器 [1-${#options[@]}]: "
+
+# 使用 select 进行选择
+select choice in "${options[@]}"; do
+    if [ -n "$choice" ]; then
+        # 解析选择的服务器信息
+        SERVER_KEY=$(echo $choice | cut -d'-' -f1 | xargs)
+        REMOTE_HOST=$(echo $choice | cut -d'-' -f2 | xargs)
+        break
+    else
+        echo "错误：无效的选择，请输入 1 到 ${#options[@]} 之间的数字"
+    fi
+done
+
+echo "已选择服务器: $REMOTE_HOST ($SERVER_KEY)"
+
 # 定义远程服务器信息
-REMOTE_HOST="root@47.95.159.234"
-REMOTE_PATH="/root/swlws/e-recycle-server"
+# REMOTE_HOST="root@47.95.159.234"
+REMOTE_PATH="/root/e-recycle-server"
 DIST_ZIP="dist.zip"
 
 # 显示帮助信息的函数
@@ -26,7 +50,7 @@ build() {
     echo "构建完成"
 
     echo "打包dist目录..."
-    zip -r $DIST_ZIP ./dist
+    zip -rq $DIST_ZIP ./dist
     echo "打包完成"
 }
 
@@ -34,13 +58,26 @@ build() {
 deploy() {
     echo "开始部署..."
     
+    # 创建远程目录
+    echo "创建远程目录..."
+    ssh $REMOTE_HOST "mkdir -p ${REMOTE_PATH}"
+
     # 上传dist.zip到远程服务器
+    # 使用 rsync 上传所有文件，排除不需要的文件
     echo "上传文件到远程服务器..."
-    scp ./$DIST_ZIP $REMOTE_HOST:/root/$DIST_ZIP
+    scp dist.zip package.json ecosystem.config.js $REMOTE_HOST:${REMOTE_PATH}/
     if [ $? -ne 0 ]; then
         echo "文件上传失败"
         exit 1
     fi
+
+    # 安装 node_modules
+    echo "安装 node_modules..."
+    ssh $REMOTE_HOST "cd ${REMOTE_PATH}
+        if [ ! -d ${REMOTE_PATH}/node_modules ]; then
+            cd ${REMOTE_PATH} && \
+            npm install
+        fi"
 
     # 检测 pm2 是否安装
     echo "检测 pm2 是否安装..."
@@ -49,27 +86,18 @@ deploy() {
         npm install pm2 -g
     fi"
 
-    # 上传 ecosystem.config.json package.json到远程服务器
-    echo "上传 ecosystem.config.json package.json 到远程服务器..."
-    scp./ecosystem.config.json $REMOTE_HOST:$REMOTE_PATH/ecosystem.config.json
-    scp ./package.json $REMOTE_HOST:$REMOTE_PATH/package.json
-    if [ $? -ne 0 ]; then
-        echo "文件上传失败"
-        exit 1
-    fi
-
-    # 在远程服务器上执行部署命令
+    # # 在远程服务器上执行部署命令
     echo "在远程服务器上执行部署..."
     ssh $REMOTE_HOST "cd /root && \
-        mkdir -p ${REMOTE_PATH} && \
-        if [ ! -d ${REMOTE_PATH}/node_modules ]; then
-            cd ${REMOTE_PATH} && \
-            npm install
-        fi && \
-        rm -rf ${REMOTE_PATH}/dist* && \
+        cd ${REMOTE_PATH} && \
+        rm -rf ${REMOTE_PATH}/dist && \
         unzip $DIST_ZIP -d ${REMOTE_PATH} && \
         rm -rf $DIST_ZIP && \
-        pm2 restart all && \
+        if pm2 list | grep -q 'e-recycle-server'; then
+            pm2 restart ecosystem.config.js
+        else
+            pm2 start ecosystem.config.js
+        fi && \
         pm2 list"
     
     # 清理本地临时文件
