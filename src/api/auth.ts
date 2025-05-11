@@ -23,7 +23,7 @@ const apis: ApiCfg[] = [
   },
   {
     url: "/api/user/list",
-    method: "get",
+    method: "post",
     handler: {
       version: "1.0.0",
       cb: i_user_list,
