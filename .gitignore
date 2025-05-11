@@ -10,7 +10,6 @@
 .env.*.local
 
 # Config files with sensitive information
-/src/config/
 
 # Build output
 /dist
