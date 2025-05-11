@@ -3,7 +3,7 @@
 # 定义服务器选项数组
 options=(
     "dev - root@dev.swlws.site"
-    "prod - root@12.swlws.site"
+    "prod - root@swlws.site"
 )
 
 # 显示服务器列表
