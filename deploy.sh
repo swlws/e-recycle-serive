@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # 定义远程服务器信息
-REMOTE_HOST="root@119.91.217.77"
-REMOTE_PATH="/root/swlws/platform-be"
+REMOTE_HOST="root@47.95.159.234"
+REMOTE_PATH="/root/swlws/e-recycle-server"
 DIST_ZIP="dist.zip"
 
 # 显示帮助信息的函数
@@ -42,9 +42,30 @@ deploy() {
         exit 1
     fi
 
+    # 检测 pm2 是否安装
+    echo "检测 pm2 是否安装..."
+    ssh $REMOTE_HOST "if ! command -v pm2 &> /dev/null; then
+        echo 'pm2 未安装，开始安装...'
+        npm install pm2 -g
+    fi"
+
+    # 上传 ecosystem.config.json package.json到远程服务器
+    echo "上传 ecosystem.config.json package.json 到远程服务器..."
+    scp./ecosystem.config.json $REMOTE_HOST:$REMOTE_PATH/ecosystem.config.json
+    scp ./package.json $REMOTE_HOST:$REMOTE_PATH/package.json
+    if [ $? -ne 0 ]; then
+        echo "文件上传失败"
+        exit 1
+    fi
+
     # 在远程服务器上执行部署命令
     echo "在远程服务器上执行部署..."
     ssh $REMOTE_HOST "cd /root && \
+        mkdir -p ${REMOTE_PATH} && \
+        if [ ! -d ${REMOTE_PATH}/node_modules ]; then
+            cd ${REMOTE_PATH} && \
+            npm install
+        fi && \
         rm -rf ${REMOTE_PATH}/dist* && \
         unzip $DIST_ZIP -d ${REMOTE_PATH} && \
         rm -rf $DIST_ZIP && \

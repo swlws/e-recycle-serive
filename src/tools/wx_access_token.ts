@@ -1,5 +1,8 @@
-import wx_config from "../config/wx.json";
+import { getWxConfig } from "../config";
 import { send_get } from "../lib/http";
+
+// 微信配置
+const wx_config = getWxConfig();
 
 // 微信 access_token
 let wx_access_token = "";

@@ -1,13 +1,20 @@
+import { getMongodbConfig } from "./config";
 import NetServer from "./lib/net-server";
 import apis from "./api/index";
 
 // 加载定时任务
 import "./corn/index";
 
-const PLATFORM_NAME = "Platform-YI";
+const { host, port, database } = getMongodbConfig();
+console.log("\n=== Database Connection Info ===");
+console.log(`Host: ${host}`);
+console.log(`Port: ${port}`);
+console.log(`Database: ${database}`);
+console.log("=============================\n");
+console.log("");
 
 const server = new NetServer({
-  name: PLATFORM_NAME,
+  name: "e-recycle-server",
   host: "127.0.0.1",
   port: 8808,
   api_version: "1.0.0",

@@ -21,7 +21,7 @@
 
 module.exports = [
   {
-    name: "Platform-Server",
+    name: "e-recycle-server",
     script: "./dist/main.js",
 
     // watch 策略

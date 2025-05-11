@@ -1,7 +1,9 @@
 import fs from "fs";
 import COS, { StorageClass } from "cos-nodejs-sdk-v5";
+import { getCosConfig } from "../config";
+
 // 腾讯云 COS 配置
-import config from "../config/cos.json";
+const config = getCosConfig();
 
 /**
  * COS 文件上传

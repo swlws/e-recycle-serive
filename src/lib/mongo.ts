@@ -14,6 +14,7 @@ import {
   UpdateFilter,
   UpdateOptions,
 } from "mongodb";
+import { getMongodbConfig } from "../config";
 
 interface MongoDbConfig {
   host: string;
@@ -581,18 +582,19 @@ export async function getMongo() {
   if (mongo) {
     return mongo;
   } else {
+    const { host, port, database, username, password } = getMongodbConfig();
     const mongoConf: MongoDbConfig = {
       // loggerLevel: "warn", // mongodb日志级别
       // host: "192.168.5.110",
-      host: "swlws.top",
-      port: 27017,
-      database: "swlws",
+      host,
+      port,
+      database,
       maxTimeMS: 30000, //(30 * 1000) 超时30秒 (使用错误日志中的时间戳来确定是哪个操作)
       authMechanism: "SCRAM-SHA-256", //用户认证机制
       forceServerObjectId: true, // 指定_id由服务端产生
       auth: {
-        username: "swlws",
-        password: "swlws@123!!!",
+        username,
+        password,
       },
     };
 
