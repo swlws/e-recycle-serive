@@ -25,7 +25,6 @@ done
 echo "已选择服务器: $REMOTE_HOST ($SERVER_KEY)"
 
 # 定义远程服务器信息
-# REMOTE_HOST="root@47.95.159.234"
 REMOTE_PATH="/root/e-recycle-server"
 DIST_ZIP="dist.zip"
 
