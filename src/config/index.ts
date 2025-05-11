@@ -2,8 +2,9 @@ import fs from "fs";
 import path from "path";
 import { PlainObject } from "../../typings/public";
 
-let cosCondig: PlainObject;
+const envDir = path.resolve(process.cwd(), "..", "e-recycle-env", "env");
 
+let cosCondig: PlainObject;
 /**
  * 获取cos配置
  * @returns
@@ -14,13 +15,7 @@ export function getCosConfig() {
   }
 
   try {
-    const configPath = path.resolve(
-      process.cwd(),
-      "..",
-      "e-recycle-env",
-      "env",
-      "cos.json"
-    );
+    const configPath = path.resolve(envDir, "cos.json");
     const configStr = fs.readFileSync(configPath, "utf-8");
     cosCondig = JSON.parse(configStr);
     return cosCondig;
@@ -41,13 +36,7 @@ export function getMongodbConfig() {
   }
 
   try {
-    const configPath = path.resolve(
-      process.cwd(),
-      "..",
-      "e-recycle-env",
-      "env",
-      "mongodb.json"
-    );
+    const configPath = path.resolve(envDir, "mongodb.json");
     const configStr = fs.readFileSync(configPath, "utf-8");
     dbConfig = JSON.parse(configStr);
     return dbConfig;
@@ -67,13 +56,7 @@ export function getWxConfig() {
     return wxConfig;
   }
   try {
-    const configPath = path.resolve(
-      process.cwd(),
-      "..",
-      "e-recycle-env",
-      "env",
-      "wx.json"
-    );
+    const configPath = path.resolve(envDir, "wx.json");
     const configStr = fs.readFileSync(configPath, "utf-8");
     wxConfig = JSON.parse(configStr);
     return wxConfig;
