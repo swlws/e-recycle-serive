@@ -27,6 +27,9 @@ export async function query_all_task(
   } = params;
 
   const query: PlainObject = {};
+
+  // 过滤掉区的检索限制
+  delete rest.district;
   for (const key in rest) {
     if (["province", "city", "district"].includes(key)) {
       query[`location.${key}`] = rest[key];
