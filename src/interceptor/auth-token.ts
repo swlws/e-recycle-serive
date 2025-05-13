@@ -5,6 +5,7 @@ import {
   generateToken,
   verifyToken,
 } from "../business/auth/helper/token";
+import CustomError from "../lib/custom-error";
 
 /**
  * Token 校验拦截器
@@ -39,6 +40,10 @@ export default function auth_token_interceptor(
 
     return next();
   }
-
-  return next(new Error("token is invalid"));
+  res.send({
+    r0: 401,
+    r1: reason,
+    res: "",
+  });
+  // return next(new CustomError(reason));
 }

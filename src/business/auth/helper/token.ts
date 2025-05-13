@@ -14,7 +14,7 @@ export enum ENUM_REASON {
   /** 无效 */
   INVALID_TOKEN = "invalid token",
   /** 异常 */
-  EXCEPTION = "exception",
+  EXCEPTION = "token exception",
 }
 
 /**

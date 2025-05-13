@@ -4,6 +4,7 @@ import CustomError, { ENUM_CUSTOM_ERROR_CODE } from "./custom-error";
 import Logger from "bunyan";
 import { getMongo } from "./mongo";
 import logger from "./logger";
+import auth_token_interceptor from "../interceptor/auth-token";
 
 const REQUEST_CONTEXT_KEY = "r_ctx";
 
@@ -202,7 +203,11 @@ export default class NetServer {
       const handlers = restify.plugins.conditionalHandler([
         {
           version,
-          handler: [cb as RequestHandler, this.end_request_chain.bind(this)],
+          handler: [
+            auth_token_interceptor,
+            cb as RequestHandler,
+            this.end_request_chain.bind(this),
+          ],
         },
       ]);
 
