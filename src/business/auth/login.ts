@@ -3,13 +3,32 @@ import { PlainObject } from "../../../typings/public";
 import { ReqCtx } from "../../lib/net-server";
 import { decrypt_data } from "../../tools/decrypt-wx-data";
 import { get_user_session_info } from "../wx-openapi/jscode-to-session";
-import { find_user_via_phone_number } from "./helper/find_user";
+import {
+  find_user_via_phone_number,
+  find_user_via_pwd,
+} from "./helper/find_user";
 import { getNowYMDHMS } from "../../tools/time";
 import { create_user } from "./helper/create_user";
 import { update_user } from "./helper/update_user";
 import { get_user_seesion_key } from "./helper/get_user_seesion_key";
 import { generate_random_name } from "./helper/random_name";
 import { increase_score_for_invitation } from "../score/helper/increase_score_for_invitation";
+import { generateToken } from "./helper/token";
+
+/**
+ * 账号密码登录
+ * @param parms
+ * @returns
+ */
+async function loginViaPwd(parms: any) {
+  const { account, pwd } = parms;
+  const user = await find_user_via_pwd(account, pwd);
+  if (!user) {
+    throw new Error("账号或密码错误");
+  }
+
+  return generateToken(user._id.toString());
+}
 
 /**
  * 登录
@@ -18,7 +37,10 @@ import { increase_score_for_invitation } from "../score/helper/increase_score_fo
  * @param headers
  */
 export async function login(ctx: ReqCtx, params: any, headers: PlainObject) {
-  const { iv, encryptedData, code, inviter } = params;
+  const { auth, iv, encryptedData, code, inviter } = params;
+  if (auth === "password") {
+    return await loginViaPwd(params);
+  }
 
   // 获取用户session_key
   const { session_key, openid } = await get_user_seesion_key(code);

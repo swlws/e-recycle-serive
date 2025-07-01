@@ -41,6 +41,9 @@ const apis: ApiCfg[] = [
       version: "1.0.0",
       cb: i_query_all_task,
     },
+    options: {
+      authSession: false,
+    },
   },
   // 用户发布过的任务
   {

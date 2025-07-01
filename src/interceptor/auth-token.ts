@@ -17,12 +17,17 @@ import CustomError from "../lib/custom-error";
 export default function auth_token_interceptor(
   req: Request,
   res: Response,
-  next: Next
+  next: Next,
+  options?: any
 ) {
-  const useToken = req.header(ENUM_HEADERS.USE_TOKEN);
-  if (useToken !== "true") {
+  if (options?.authSession === false) {
     return next();
   }
+
+  // const useToken = req.header(ENUM_HEADERS.USE_TOKEN);
+  // if (useToken !== "true") {
+  //   return next();
+  // }
 
   // 校验 token
   const token = req.header(ENUM_HEADERS.TOKEN);
@@ -40,6 +45,7 @@ export default function auth_token_interceptor(
 
     return next();
   }
+
   res.send({
     r0: 401,
     r1: reason,

@@ -73,6 +73,10 @@ export interface ApiCfg {
     cb: RequestHandlerWrapper;
   };
   auth?: boolean;
+  options?: {
+    // 是否验证token
+    authSession?: boolean;
+  };
 }
 
 export default class NetServer {
@@ -199,12 +203,14 @@ export default class NetServer {
     let apis = this.option.apis;
     if (!Array.isArray(apis)) return;
 
-    apis.forEach(({ url, method, handler: { version, cb } }) => {
+    apis.forEach(({ url, method, handler: { version, cb }, options }) => {
       const handlers = restify.plugins.conditionalHandler([
         {
           version,
           handler: [
-            auth_token_interceptor,
+            (req, res, next) => {
+              auth_token_interceptor(req, res, next, options);
+            },
             cb as RequestHandler,
             this.end_request_chain.bind(this),
           ],

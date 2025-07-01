@@ -9,6 +9,9 @@ const apis: ApiCfg[] = [
       version: "1.0.0",
       cb: server_alive,
     },
+    options: {
+      authSession: false,
+    },
   },
 ];
 

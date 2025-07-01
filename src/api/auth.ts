@@ -1,5 +1,10 @@
 import { ApiCfg } from "../lib/net-server";
-import { i_login, i_update_user_info, i_user_list } from "../interface/auth";
+import {
+  i_login,
+  i_make_token,
+  i_update_user_info,
+  i_user_list,
+} from "../interface/auth";
 
 const apis: ApiCfg[] = [
   // loign
@@ -10,7 +15,21 @@ const apis: ApiCfg[] = [
       version: "1.0.0",
       cb: i_login,
     },
-    auth: false,
+    options: {
+      authSession: false,
+    },
+  },
+  // 获取token
+  {
+    url: "/api/token",
+    method: "post",
+    handler: {
+      version: "1.0.0",
+      cb: i_make_token,
+    },
+    options: {
+      authSession: false,
+    },
   },
   // 更新用户信息
   {

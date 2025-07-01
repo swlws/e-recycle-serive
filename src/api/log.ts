@@ -10,7 +10,9 @@ const apis: ApiCfg[] = [
       version: "1.0.0",
       cb: i_insert_log,
     },
-    auth: false,
+    options: {
+      authSession: false,
+    },
   },
 ];
 
